@@ -25,7 +25,7 @@ import mobile from "../../assets/mobile.svg";
 import price from "../../assets/price.svg";
 import time from "../../assets/time.svg";
 import mobileBanner from "../../assets/banner-mobile.jpg";
-import desktopBanner from "../../assets/banner.jpg";
+import desktopBanner from "../../assets/banner1.png";
 import ReturnSection from "../../Return/ReturnSection.jsx";
 import BannerSection from "../../Return/BannerSection.jsx";
 import HeroBanner from "../../Return/HeroBanner.jsx";
@@ -117,30 +117,66 @@ const Home = () => {
       <BannerSection />
       {/* return critaria */}
 
-      <ReturnSection />
+    
 
       {/* <h1>add here some banner attractive</h1> */}
 
       <Slide direction="right">
-        <section className="relative w-full overflow-hidden">
-          <div className="relative">
-            {/* Mobile Banner */}
-            <img
-              src={mobileBanner}
-              alt="Mobile Banner"
-              className="w-full h-auto object-cover max-h-[400px] sm:hidden rounded-xl"
-            />
+      <section className="w-full bg-gradient-to-r from-[#F3F7F5] via-white to-[#F3F7F5] py-10">
+  <div className="max-w-7xl mx-auto px-4">
 
-            {/* Desktop Banner */}
-            <img
-              src={desktopBanner}
-              alt="Desktop Banner"
-              className="w-full h-auto object-cover max-h-[500px] hidden sm:block rounded-xl"
-            />
-          </div>
-        </section>
+    <div className="relative rounded-2xl bg-white shadow-lg overflow-hidden">
+
+      {/* Mobile Banner */}
+      <img
+        src={mobileBanner}
+        alt="Mobile Banner"
+        className="w-full h-auto sm:hidden"
+      />
+
+      {/* Desktop Banner */}
+      <div className="hidden sm:grid grid-cols-2 items-center gap-10 
+        h-[380px] md:h-[420px] px-12
+        bg-gradient-to-r from-gray-100 via-white to-gray-100">
+
+        {/* LEFT CONTENT */}
+        <div className="space-y-5">
+          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 leading-tight">
+            Get Fresh Groceries <br />
+            <span className="text-emerald-600">At Your Doorstep</span>
+          </h1>
+
+          <p className="text-gray-600 text-lg max-w-md">
+            Daily essentials, farm-fresh vegetables, and quality products
+            delivered fast & safely to your home.
+          </p>
+
+          <button className="inline-flex items-center gap-2 
+            bg-emerald-600 text-white px-7 py-3 rounded-full 
+            font-semibold shadow-md
+            hover:bg-emerald-700 hover:shadow-lg transition-all">
+            Subscribe Now
+          </button>
+        </div>
+
+        {/* RIGHT IMAGE */}
+        <div className="flex justify-center items-center h-full">
+          <img
+            src={desktopBanner}
+            alt="Desktop Banner"
+            className="max-h-full max-w-full object-contain"
+          />
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</section>
+
       </Slide>
 
+ <ReturnSection />
       {/* <div className="scroll-to-top bg-green-500">
     <button className="scroll-to-top-button show">↑</button>
   </div> 

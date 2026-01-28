@@ -8,7 +8,7 @@ import { Zoom } from 'react-awesome-reveal';
 import { useSearch } from '../../context/SearchContext'; // import the context
 import 'react-loading-skeleton/dist/skeleton.css';
 
-const perPage = 12;
+const perPage = 20;
 
 const ProductGrid = () => {
   const { searchQuery, setSearchQuery } = useSearch();
@@ -112,7 +112,7 @@ const ProductGrid = () => {
           <input
             type="text"
             className="w-full px-4 py-2 pr-10 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-green-500 transition duration-200"
-            placeholder="🔍 Search for products..."
+            placeholder="Search for products..."
             value={searchQuery}
             onChange={(e) => {
               setSearchQuery(e.target.value);
@@ -136,10 +136,10 @@ const ProductGrid = () => {
           onChange={(e) => setSortBy(e.target.value)}
           className="w-full md:w-1/4 px-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-green-500 transition duration-200 bg-white"
         >
-          <option value="">🧮 Sort By</option>
-          <option value="priceLow">💰 Price: Low → High</option>
-          <option value="priceHigh">💸 Price: High → Low</option>
-          <option value="rating">⭐ Rating</option>
+          <option value="">Filter By</option>
+          <option value="priceLow"> Price: Low → High</option>
+          <option value="priceHigh"> Price: High → Low</option>
+          <option value="rating">Rating</option>
         </select>
       </div>
 
@@ -158,7 +158,7 @@ const ProductGrid = () => {
             disabled={page === 1}
             className="px-4 py-2 rounded-full bg-gray-100 hover:bg-gray-200 disabled:opacity-50"
           >
-            ◀️ Previous
+            ◀ Previous
           </button>
           <span className="text-gray-600 font-medium">
             Page {page} of {totalPages}
@@ -168,7 +168,7 @@ const ProductGrid = () => {
             disabled={page === totalPages}
             className="px-4 py-2 rounded-full bg-gray-100 hover:bg-gray-200 disabled:opacity-50"
           >
-            Next ▶️
+            Next ▶
           </button>
         </div>
       )}
