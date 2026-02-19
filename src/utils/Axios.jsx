@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseURL = "https://grocery-backend-9jjx.onrender.com/api";
+// const baseURL = "https://grocery-backend-9jjx.onrender.com/api";
 // const baseURL = "http://localhost:4001/api"; // Local development
 const Axios = axios.create({
   baseURL,
