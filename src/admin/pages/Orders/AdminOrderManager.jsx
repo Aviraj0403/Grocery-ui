@@ -3,6 +3,36 @@ import axios from '../../../utils/Axios';
 import toast from 'react-hot-toast';
 import AdminOrderDetails from './AdminOrderDetails';
 
+// ── Payment method badge ─────────────────────────────────────────────────────
+const PaymentMethodBadge = ({ method }) => {
+  if (method === 'ONLINE') {
+    return (
+      <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-bold bg-blue-100 text-blue-700 border border-blue-200">
+        💳 Online
+      </span>
+    );
+  }
+  return (
+    <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-bold bg-gray-100 text-gray-600 border border-gray-300">
+      💵 COD
+    </span>
+  );
+};
+
+// ── Payment status badge ─────────────────────────────────────────────────────
+const PaymentStatusBadge = ({ status }) => {
+  const styles = {
+    Paid: 'bg-green-100 text-green-700 border-green-200',
+    Pending: 'bg-yellow-100 text-yellow-700 border-yellow-200',
+    Failed: 'bg-red-100 text-red-700 border-red-200',
+  };
+  return (
+    <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-bold border ${styles[status] || styles.Pending}`}>
+      {status}
+    </span>
+  );
+};
+
 const getOrderDetailsAdmin = async (orderId) => {
   const res = await axios.get(`/getOrderDetailsAdmin/${orderId}`);
   if (res.data.success) return res.data.order;
@@ -184,6 +214,7 @@ const AdminOrderManager = () => {
                   <th className="px-4 py-2">Customer</th>
                   <th className="px-4 py-2">Total</th>
                   <th className="px-4 py-2">Status</th>
+                  <th className="px-4 py-2">Method</th>
                   <th className="px-4 py-2">Payment</th>
                   <th className="px-4 py-2">Date</th>
                   <th className="px-4 py-2 text-right">Actions</th>
@@ -204,14 +235,15 @@ const AdminOrderManager = () => {
                         value={order.orderStatus}
                         onClick={e => e.stopPropagation()}
                         onChange={e => updateStatus(order._id, e.target.value)}
-                        className="border rounded px-2 py-1"
+                        className="border rounded px-2 py-1 text-sm"
                       >
                         {['Pending', 'Processing', 'Shipped', 'Delivered', 'Cancelled'].map(s => (
                           <option key={s} value={s}>{s}</option>
                         ))}
                       </select>
                     </td>
-                    <td className="px-4 py-2">{order.paymentStatus}</td>
+                    <td className="px-4 py-2"><PaymentMethodBadge method={order.paymentMethod} /></td>
+                    <td className="px-4 py-2"><PaymentStatusBadge status={order.paymentStatus} /></td>
                     <td className="px-4 py-2">{new Date(order.createdAt).toLocaleDateString()}</td>
                     <td
                       className="px-4 py-2 text-right"
@@ -241,7 +273,12 @@ const AdminOrderManager = () => {
                 <div><strong>Order ID:</strong> {order._id.slice(0, 10)}...</div>
                 <div><strong>User:</strong> {order.user?.userName || 'Guest'}</div>
                 <div><strong>Total:</strong> ₹{order.totalAmount}</div>
-                <div><strong>Payment:</strong> {order.paymentStatus}</div>
+                <div className="flex items-center gap-2">
+                  <strong>Method:</strong> <PaymentMethodBadge method={order.paymentMethod} />
+                </div>
+                <div className="flex items-center gap-2">
+                  <strong>Payment:</strong> <PaymentStatusBadge status={order.paymentStatus} />
+                </div>
                 <div><strong>Date:</strong> {new Date(order.createdAt).toLocaleDateString()}</div>
                 <div>
                   <label className="block text-xs text-gray-500">Status:</label>

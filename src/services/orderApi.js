@@ -2,10 +2,24 @@ import Axios from '../utils/Axios';
 
 // ========== USER API CALLS ==========
 
-// Create a new order
+// Create a new order (COD)
 export const createOrder = async (orderData) => {
   const res = await Axios.post('/createOrder', orderData);
   return res.data;
+};
+
+// ── Razorpay Payment APIs ────────────────────────────────────────────────────
+
+// Step 1: Create a Razorpay order on backend and get order_id
+export const createRazorpayOrder = async (amount) => {
+  const res = await Axios.post('/createRazorpayOrder', { amount });
+  return res.data; // { success, razorpayOrderId, amount, currency, key }
+};
+
+// Step 2: Verify payment signature and persist order to DB
+export const verifyPayment = async (paymentData) => {
+  const res = await Axios.post('/verifyPayment', paymentData);
+  return res.data; // { success, order }
 };
 
 // Place order from cart
