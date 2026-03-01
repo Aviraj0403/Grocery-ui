@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { getMe, login as loginApi, logout as logoutApi } from "../services/authApi";
+import { getMe, login as loginApi, phoneLogin as phoneLoginApi, logout as logoutApi } from "../services/authApi";
 import { useQueryClient } from "@tanstack/react-query";
 import { syncCartOnLogin, fetchBackendCart } from '../features/cart/cartThunks';
 import { clearCart } from '../features/cart/cartSlice';
@@ -47,6 +47,18 @@ export const AuthProvider = ({ children }) => {
     return res.data.data;
   };
 
+  const phoneLogin = async (data) => {
+    await phoneLoginApi(data);
+    const res = await getMe();
+    setUser(res.data.data);
+
+    setCartSyncing(true);
+    await dispatch(syncCartOnLogin()).unwrap();
+    setCartSyncing(false);
+
+    return res.data.data;
+  };
+
   const logout = async () => {
     await logoutApi();
     localStorage.removeItem('authToken');
@@ -56,7 +68,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, cartSyncing, login, logout }}>
+    <AuthContext.Provider value={{ user, loading, cartSyncing, login, phoneLogin, logout }}>
       {children}
     </AuthContext.Provider>
   );

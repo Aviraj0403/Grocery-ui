@@ -3,6 +3,7 @@ import Axios from '../utils/Axios';
 // 🔓 Public Routes
 export const register = (data) => Axios.post('/user/register', data);
 export const login = (data) => Axios.post('/user/login', data);
+export const phoneLogin = (data) => Axios.post('/user/phone-login', data);
 export const forgotPassword = (data) => Axios.post('/user/forgotPassword', data);
 export const verifyOtp = (data) => Axios.post('/user/verifyOtp', data);
 export const resetPassword = (data) => Axios.post('/user/resetPassword', data);
