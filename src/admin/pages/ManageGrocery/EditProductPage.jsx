@@ -9,19 +9,17 @@ const EditProductPage = () => {
 
     // Local state fields for editing (derived from product)
     const [name, setName] = useState('');
-
-
+    const [productCode, setProductCode] = useState('');
+    const [description, setDescription] = useState('');
+    const [brand, setBrand] = useState('');
+    const [discount, setDiscount] = useState(0);
     const [categories, setCategories] = useState([]);
     const [subCategories, setSubCategories] = useState([]);
     const [category, setCategory] = useState('');
     const [subCategory, setSubCategory] = useState('');
-    const [productCode, setProductCode] = useState('');
-    const [stockQty, setStockQty] = useState(0);
-    const [price, setPrice] = useState('');
-    const [description, setDescription] = useState('');
-    const [brand, setBrand] = useState('');
-    const [discount, setDiscount] = useState(0);
     const [isAvailable, setIsAvailable] = useState(true);
+    const [variants, setVariants] = useState([]);
+    const [newVariant, setNewVariant] = useState({ unit: '', price: '', stockQty: '', packaging: 'Loose' });
 
     // Image update states: selected new images and their previews.
     const [selectedFiles, setSelectedFiles] = useState([]);
@@ -69,14 +67,7 @@ const EditProductPage = () => {
                 setBrand(data.brand || '');
                 setDiscount(data.discount || 0);
                 setIsAvailable(data.isAvailable);
-                // Assume that product price is in the first variant if available.
-                if (data.variants && data.variants.length > 0) {
-                    setPrice(data.variants[0].price);
-                    setStockQty(data.variants[0].stockQty || 0);
-                } else {
-                    setPrice('');
-                    setStockQty(0);
-                }
+                setVariants(data.variants || []);
             } else {
                 toast.error(response.data.message || 'Error fetching product details');
             }
@@ -138,8 +129,8 @@ if (selectedFiles.length > 0) {
 
     // Save updated product details.
     const handleSave = async () => {
-        if (!name || !category || !price) {
-            toast.error('Please fill in all required fields (Name, Category, Price).');
+        if (!name || !category || variants.length === 0) {
+            toast.error('Please fill in all required fields (Name, Category, and at least one Variant).');
             return;
         }
 
@@ -151,21 +142,14 @@ if (selectedFiles.length > 0) {
                 subCategory: subCategory === '' ? null : subCategory,
                 productCode,
                 description,
-                brand,
                 discount,
                 isAvailable,
+                variants: variants.map(v => ({
+                    ...v,
+                    price: Number(v.price),
+                    stockQty: Number(v.stockQty)
+                }))
             };
-
-            if (product?.variants && product.variants.length > 0) {
-                const updatedVariants = [...product.variants];
-                updatedVariants[0] = {
-                    ...updatedVariants[0], price: Number(price),
-                    stockQty: Number(stockQty), packaging: 'Loose'
-                };
-                updatedData.variants = updatedVariants;
-            } else {
-                updatedData.variants = [{ unit: '', price, stockQty: 0, packaging: 'Loose' }];
-            }
 
             const response = await axiosInstance.put(`/updateProduct/${id}`, updatedData);
             if (response.data.success) {
@@ -337,27 +321,115 @@ if (selectedFiles.length > 0) {
 
 
 
-                {/* Price */}
-                <div className="mb-4">
-                    <label className="block text-gray-700">Price:</label>
-                    <input
-                        type="number"
-                        value={price}
-                        onChange={(e) => setPrice(e.target.value)}
-                        className="mt-1 block w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        required
-                    />
-                </div>
+                {/* Variants Section */}
+                <div className="border p-4 rounded-md bg-gray-50">
+                    <h2 className="text-xl font-bold mb-4 text-gray-800">Variants</h2>
+                    
+                    {/* List Existing Variants */}
+                    <div className="space-y-4 mb-6">
+                        {variants.map((v, index) => (
+                            <div key={index} className="grid grid-cols-1 sm:grid-cols-4 gap-4 p-4 bg-white border rounded-lg shadow-sm relative group">
+                                <div>
+                                    <label className="block text-xs font-semibold text-gray-500 uppercase">Unit</label>
+                                    <input
+                                        type="text"
+                                        value={v.unit}
+                                        onChange={(e) => {
+                                            const updated = [...variants];
+                                            updated[index].unit = e.target.value;
+                                            setVariants(updated);
+                                        }}
+                                        className="mt-1 block w-full p-2 border border-gray-300 rounded-md text-sm"
+                                        placeholder="e.g. 1kg"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-xs font-semibold text-gray-500 uppercase">Price</label>
+                                    <input
+                                        type="number"
+                                        value={v.price}
+                                        onChange={(e) => {
+                                            const updated = [...variants];
+                                            updated[index].price = e.target.value;
+                                            setVariants(updated);
+                                        }}
+                                        className="mt-1 block w-full p-2 border border-gray-300 rounded-md text-sm"
+                                        placeholder="Price"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-xs font-semibold text-gray-500 uppercase">Stock</label>
+                                    <input
+                                        type="number"
+                                        value={v.stockQty}
+                                        onChange={(e) => {
+                                            const updated = [...variants];
+                                            updated[index].stockQty = e.target.value;
+                                            setVariants(updated);
+                                        }}
+                                        className="mt-1 block w-full p-2 border border-gray-300 rounded-md text-sm"
+                                        placeholder="Stock"
+                                    />
+                                </div>
+                                <div className="flex items-end">
+                                    <button
+                                        type="button"
+                                        onClick={() => {
+                                            setVariants(variants.filter((_, i) => i !== index));
+                                        }}
+                                        className="p-2 text-red-600 hover:bg-red-50 rounded-md transition-colors"
+                                        title="Remove Variant"
+                                    >
+                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
 
-                <div>
-                    <label className="block text-gray-700">Stock Quantity:</label>
-                    <input
-                        type="number"
-                        value={stockQty}
-                        onChange={(e) => setStockQty(e.target.value)}
-                        className="w-full p-3 border border-gray-300 rounded-md"
-                        required
-                    />
+                    {/* Add New Variant */}
+                    <div className="p-4 border-2 border-dashed border-blue-200 rounded-lg bg-blue-50">
+                        <h3 className="text-sm font-semibold text-blue-800 mb-3">Add New Variant</h3>
+                        <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
+                            <input
+                                type="text"
+                                placeholder="Unit (e.g. 500g)"
+                                value={newVariant.unit}
+                                onChange={(e) => setNewVariant({ ...newVariant, unit: e.target.value })}
+                                className="p-2 border border-gray-300 rounded-md text-sm"
+                            />
+                            <input
+                                type="number"
+                                placeholder="Price"
+                                value={newVariant.price}
+                                onChange={(e) => setNewVariant({ ...newVariant, price: e.target.value })}
+                                className="p-2 border border-gray-300 rounded-md text-sm"
+                            />
+                            <input
+                                type="number"
+                                placeholder="Stock"
+                                value={newVariant.stockQty}
+                                onChange={(e) => setNewVariant({ ...newVariant, stockQty: e.target.value })}
+                                className="p-2 border border-gray-300 rounded-md text-sm"
+                            />
+                            <button
+                                type="button"
+                                onClick={() => {
+                                    if (!newVariant.unit || !newVariant.price || !newVariant.stockQty) {
+                                        toast.error("Please fill all fields for the new variant.");
+                                        return;
+                                    }
+                                    setVariants([...variants, newVariant]);
+                                    setNewVariant({ unit: '', price: '', stockQty: '', packaging: 'Loose' });
+                                }}
+                                className="bg-blue-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-blue-700 transition-colors"
+                            >
+                                + Add
+                            </button>
+                        </div>
+                    </div>
                 </div>
                 {/* Description */}
                 <div className="mb-4">
