@@ -62,7 +62,14 @@ const AdminOrderDetails = ({ order, onClose }) => {
         window.location.reload();
     };
 
-    const finalAmount = order.totalAmount - (order.discountAmount || 0);
+    // Normalize shipping info (dashboard uses shippingAddress, orders page uses shipping)
+    const shippingInfo = order.shipping || order.shippingAddress;
+    
+    // In our backend, totalAmount is already the final amount (subtotal - discount).
+    // So to show original total, we add discount back.
+    const discount = order.discountAmount || 0;
+    const amountPaid = order.totalAmount; 
+    const originalTotal = amountPaid + discount;
     const isOnline = order.paymentMethod === "ONLINE";
 
     return (
@@ -122,12 +129,12 @@ const AdminOrderDetails = ({ order, onClose }) => {
                     {/* Right: Shipping */}
                     <div className="text-sm text-gray-700">
                         <h2 className="text-base font-semibold mb-2 border-b pb-1">Shipping Information</h2>
-                        <p className="font-semibold">{order.shipping?.fullName || "N/A"}</p>
-                        <p>{order.shipping?.addressLine1 || "N/A"}{order.shipping?.addressLine2 ? `, ${order.shipping.addressLine2}` : ""}</p>
-                        <p>{order.shipping?.city || "N/A"}, {order.shipping?.state || "N/A"} – {order.shipping?.pinCode || "N/A"}</p>
-                        <p>{order.shipping?.country || "N/A"}</p>
+                        <p className="font-semibold">{shippingInfo?.fullName || "N/A"}</p>
+                        <p>{shippingInfo?.addressLine1 || "N/A"}{shippingInfo?.addressLine2 ? `, ${shippingInfo.addressLine2}` : ""}</p>
+                        <p>{shippingInfo?.city || "N/A"}, {shippingInfo?.state || "N/A"} – {shippingInfo?.pinCode || "N/A"}</p>
+                        <p>{shippingInfo?.country || "N/A"}</p>
                         <p className="mt-1">📧 {order.user?.email || "N/A"}</p>
-                        <p>📞 {order.shipping?.phone || "N/A"}</p>
+                        <p>📞 {shippingInfo?.phone || "N/A"}</p>
                     </div>
                 </section>
 
@@ -157,29 +164,51 @@ const AdminOrderDetails = ({ order, onClose }) => {
 
                 {/* ── Totals ───────────────────────────────────────────────── */}
                 <section className="border-t pt-4 space-y-2">
-                    {order.discountAmount > 0 ? (
+                    {discount > 0 ? (
                         <>
                             <div className="flex justify-between text-sm text-gray-400 line-through">
                                 <span>Original Total:</span>
-                                <span>₹{order.totalAmount.toFixed(2)}</span>
+                                <span>₹{originalTotal.toFixed(2)}</span>
                             </div>
                             <div className="flex justify-between text-sm text-green-600 font-medium">
                                 <span>Discount {order.discountCode ? `(${order.discountCode})` : ""}:</span>
-                                <span>– ₹{order.discountAmount.toFixed(2)}</span>
+                                <span>– ₹{discount.toFixed(2)}</span>
                             </div>
                         </>
                     ) : null}
                     <div className="flex justify-between font-bold text-blue-700 text-lg">
-                        <span>{order.discountAmount > 0 ? "Amount Paid:" : "Total Amount:"}</span>
-                        <span>₹{finalAmount.toFixed(2)}</span>
+                        <span>{discount > 0 ? "Amount Paid:" : "Total Amount:"}</span>
+                        <span>₹{amountPaid.toFixed(2)}</span>
                     </div>
                 </section>
 
                 {/* ── Actions ──────────────────────────────────────────────── */}
-                <div className="flex justify-center mt-8">
+                <div className="flex flex-col sm:flex-row justify-center gap-4 mt-8">
+                    {order.paymentStatus === "Pending" && (
+                        <button
+                            onClick={async () => {
+                                if (window.confirm("Are you sure you want to mark this order as PAID?")) {
+                                    try {
+                                        const res = await axiosInstance.put(`/updateOrderStatus/${order._id}`, {
+                                            paymentStatus: "Paid"
+                                        });
+                                        if (res.data.success) {
+                                            toast.success("Order marked as Paid");
+                                            window.location.reload();
+                                        }
+                                    } catch (err) {
+                                        toast.error("Failed to update payment status");
+                                    }
+                                }
+                            }}
+                            className="bg-green-600 text-white px-8 py-2.5 rounded-lg hover:bg-green-700 font-semibold shadow flex items-center justify-center gap-2"
+                        >
+                            💰 Mark as Paid
+                        </button>
+                    )}
                     <button
                         onClick={handlePrint}
-                        className="bg-blue-600 text-white px-8 py-2.5 rounded-lg hover:bg-blue-700 font-semibold shadow"
+                        className="bg-blue-600 text-white px-8 py-2.5 rounded-lg hover:bg-blue-700 font-semibold shadow flex items-center justify-center gap-2"
                     >
                         🖨 Print Receipt
                     </button>

@@ -317,16 +317,29 @@ const handleFileChange = (e) => {
           </div>
         </Box>
 
-        <div>
-          <label className="block font-semibold mb-2">Brand</label>
-          <input
-            type="text"
-            name="brand"
-            value={product.brand}
-            onChange={handleInputChange}
-            className="w-full border p-3 rounded"
-          />
-        </div>
+        <Box className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label className="block font-semibold mb-2">Brand</label>
+            <input
+              type="text"
+              name="brand"
+              value={product.brand}
+              onChange={handleInputChange}
+              className="w-full border p-3 rounded"
+            />
+          </div>
+          <div>
+            <label className="block font-semibold mb-2">Discount (%)</label>
+            <input
+              type="number"
+              name="discount"
+              value={product.discount}
+              onChange={handleInputChange}
+              className="w-full border p-3 rounded"
+              placeholder="0"
+            />
+          </div>
+        </Box>
 
         <div>
           <label className="block font-semibold mb-2">Description</label>
