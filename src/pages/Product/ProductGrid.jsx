@@ -59,10 +59,10 @@ const ProductGrid = () => {
 
       if (sortBy === 'priceLow') {
         sorted.sort((a, b) => (a.variants[0]?.price || 0) - (b.variants[0]?.price || 0));
-      } 
+      }
       else if (sortBy === 'priceHigh') {
         sorted.sort((a, b) => (b.variants[0]?.price || 0) - (a.variants[0]?.price || 0));
-      } 
+      }
       else if (sortBy === 'rating') {
         sorted.sort((a, b) => (b.rating || 0) - (a.rating || 0));
       }
@@ -177,11 +177,11 @@ const ProductGrid = () => {
 
         {loading
           ? Array(perPage).fill(0).map((_, i) =>
-              <Skeleton key={i} height={250} className="rounded-lg" />
-            )
+            <Skeleton key={i} height={250} className="rounded-lg" />
+          )
           : products.map((product) =>
-              <ProductCard key={product._id} product={product} />
-            )
+            <ProductCard key={product._id} product={product} />
+          )
         }
 
       </div>
