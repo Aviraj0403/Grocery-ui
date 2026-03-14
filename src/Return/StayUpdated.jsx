@@ -20,7 +20,7 @@ const StayUpdated = () => {
   };
 
   return (
-    <section className="relative text-center py-10 bg-gradient-to-br from-green-50 via-white to-green-100 rounded-t-3xl shadow-inner overflow-hidden">
+    <section className="relative text-center py-16 bg-gradient-to-br from-green-50 via-white to-green-100 rounded-t-3xl shadow-inner overflow-hidden">
       {/* Decorative Icons */}
       <div className="absolute top-4 left-4 text-green-300 text-6xl opacity-20 animate-spin-slow">
         <MdLocalOffer />

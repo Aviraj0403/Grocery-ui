@@ -39,54 +39,72 @@ import WelcomeSection from "../../Return/WelcomeSection.jsx";
 
 const Home = () => {
   const navigate = useNavigate();
-  
-  useEffect(() => {
+  const handleNavigate = () => {
+    setLoading(true);
+    setTimeout(() => navigate("/arrivals"), 500);
+  };
+   
+   useEffect(() => {
     const savedPosition = sessionStorage.getItem("scrollPosition");
+
     if (savedPosition) {
       window.scrollTo({
         top: parseInt(savedPosition),
         behavior: "smooth",
       });
+
       sessionStorage.removeItem("scrollPosition");
     }
   }, []);
 
+   useEffect(() => {
+    const savedPosition = sessionStorage.getItem("scrollPosition");
+
+    if (savedPosition) {
+      window.scrollTo({
+        top: parseInt(savedPosition),
+        behavior: "smooth",
+      });
+
+      sessionStorage.removeItem("scrollPosition");
+    }
+  }, []);
+
+
   return (
-    <div className="bg-gray-50 min-h-screen">
-      {/* Hero Section */}
+    <div className="bg-gray-50">
+      {/* Hero Banner */}
+
       <HeroBanner />
 
-      {/* Feature Strip */}
+      {/* return section */}
+
       <FeatureStrip />
 
-      {/* Main Content Container */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6 py-2">
-        
-        {/* Welcome Section */}
-        <WelcomeSection />
+      {/* grab first offer*/}
+      {/* relative bg-green-100 text-center py-16 px-4 rounded-b-3xl */}
+    <WelcomeSection/>
 
-        {/* Categories Section - Optional but recommended to uncomment if needed */}
-        {/* <section>
-          <CategoriesSection />
-        </section> */}
 
-        {/* Featured Products */}
-        <section id="featured-products">
-          <div className="text-center mb-8">
-            <h2 className="text-3xl font-black text-gray-900 mb-2">
-              Featured <span className="text-emerald-600">Products</span>
-            </h2>
-            <div className="w-20 h-1 bg-emerald-600 mx-auto rounded-full"></div>
-          </div>
-          <ProductGrid />
-        </section>
+      {/* cashback and offer section */}
+    
+      {/* Categories Preview */}
 
-        {/* Promo Banners */}
-        <PromoBanners />
+      {/* <CategoriesSection /> */}
 
-        {/* Shop Now / Banner Section */}
-        <BannerSection />
-      </div>
+      {/* featured products */}
+      <section className="max-w-7xl mx-auto px-4 py-12">
+        <h2 className="text-2xl font-bold text-green-800 mb-6 text-center">
+          Featured Products
+        </h2>
+
+        <ProductGrid />
+      </section>
+
+ <PromoBanners/>
+      {/* shop now */}
+
+      <BannerSection />
       {/* return critaria */}
 
     
