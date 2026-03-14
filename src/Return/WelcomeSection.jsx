@@ -13,40 +13,40 @@ const WelcomeSection = ({ aboutImage }) => {
   };
 
   return (
-    <section className="relative text-center -mt-8 py-12 px-4 rounded-b-3xl">
-      <div className="max-w-8xl mx-auto">
-        <Slide direction="down">
-          <div className="bg-white rounded-xl shadow-lg p-6 flex flex-col lg:flex-row items-center text-center lg:text-left space-y-6 lg:space-y-0 lg:space-x-10 w-full max-w-6xl mx-auto">
+    <section className="relative px-4">
+      <div className="max-w-7xl mx-auto">
+        <Slide direction="up">
+          <div className="bg-emerald-600 rounded-[2rem] shadow-2xl p-8 lg:p-12 flex flex-col lg:flex-row items-center gap-10 overflow-hidden relative group">
             
-            {/* Image */}
-            <div className="flex-shrink-0 ">
+            {/* Background Decorative Rings */}
+            <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-500 rounded-full -mr-20 -mt-20 group-hover:scale-110 transition-transform duration-700"></div>
+            <div className="absolute bottom-0 left-0 w-32 h-32 bg-emerald-700 rounded-full -ml-10 -mb-10 opacity-50"></div>
+
+            {/* Image container with glass effect */}
+            <div className="flex-shrink-0 z-10 p-6 bg-white/10 rounded-2xl backdrop-blur-sm border border-white/20">
               <img
                 src={aboutimg}
-                alt="about-icon"
-                className="w-32 h-32 object-contain mx-auto lg:mx-0"
+                alt="Welcome to ShanuMart"
+                className="w-40 h-40 object-contain drop-shadow-2xl"
               />
             </div>
 
-            {/* Text */}
-            <div className="flex flex-col justify-center items-center lg:items-start space-y-4">
-              <div>
-                <h1 className="text-4xl font-bold text-green-800 mb-2">
-                  Welcome to <span className="text-yellow-500">Shanu-</span>Mart
-                </h1>
+            {/* Text Content */}
+            <div className="flex-1 text-center lg:text-left z-10">
+              <h2 className="text-3xl lg:text-5xl font-black text-white mb-4 leading-tight">
+                New to <span className="text-yellow-400 underline decoration-yellow-400/30 underline-offset-8">Shanu-</span>Mart?
+              </h2>
 
-                <p className="text-lg text-green-700 max-w-xl">
-                  Order Delicious Biscuits from ShanuMart , & Get ₹50 Off
-                  
-                </p>
-              </div>
+              <p className="text-xl text-emerald-50 mb-8 max-w-xl font-medium leading-relaxed">
+                Experience the freshest reach! Order premium groceries today and get <span className="text-yellow-400 font-extrabold">₹50 OFF</span> on your first order.
+              </p>
 
               <button
                 onClick={handleClick}
-                className="bg-green-600 hover:bg-green-700 text-white text-lg font-semibold px-6 py-3 rounded-full transition-all duration-300 shadow-md"
+                className="bg-white text-emerald-700 text-lg font-bold px-10 py-4 rounded-full shadow-lg hover:bg-yellow-400 hover:text-emerald-900 transition-all duration-300 transform hover:scale-105 active:scale-95 flex items-center justify-center gap-3 mx-auto lg:mx-0"
               >
-                Grab Your First Order Here
+                Claim First Order Discount 🎁
               </button>
-
             </div>
           </div>
         </Slide>

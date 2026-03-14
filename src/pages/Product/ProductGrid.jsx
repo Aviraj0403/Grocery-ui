@@ -116,22 +116,25 @@ const ProductGrid = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-8">
+    <div className="w-full">
 
-      {/* Categories */}
-      <section className="mb-4">
-        <div className="flex flex-wrap gap-4 justify-center">
-
-          <div onClick={() => handleCategoryClick('All')}>
+      {/* Categories Scroller */}
+      <section className="mb-8">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-xl font-bold text-gray-900">Browse <span className="text-emerald-600">Categories</span></h3>
+        </div>
+        
+        <div className="flex flex-nowrap overflow-x-auto gap-6 sm:gap-8 pb-4 scrollbar-hide px-2">
+          <div onClick={() => handleCategoryClick('All')} className="flex-shrink-0">
             <CategoryCard
               name="All"
-              img="/path/to/default-all-icon.png"
+              img="https://cdn-icons-png.flaticon.com/512/2352/2352165.png" // Updated to a cleaner grid/all icon
               isSelected={selectedCat === 'All'}
             />
           </div>
 
           {categories.map((cat) => (
-            <div key={cat._id} onClick={() => handleCategoryClick(cat._id)}>
+            <div key={cat._id} onClick={() => handleCategoryClick(cat._id)} className="flex-shrink-0">
               <CategoryCard
                 name={cat.name}
                 img={cat.image[0]}
@@ -139,18 +142,35 @@ const ProductGrid = () => {
               />
             </div>
           ))}
-
         </div>
+
+        {/* CSS for hiding scrollbar but keeping scroll functionality */}
+        <style>
+          {`
+            .scrollbar-hide::-webkit-scrollbar {
+              display: none;
+            }
+            .scrollbar-hide {
+              -ms-overflow-style: none;
+              scrollbar-width: none;
+            }
+          `}
+        </style>
       </section>
 
       {/* Filter + Search */}
-      <div ref={filterSearchRef} className="flex flex-col md:flex-row justify-between items-center gap-4 mb-6 bg-white p-4 rounded-lg shadow-sm">
+      <div ref={filterSearchRef} className="flex flex-col lg:flex-row justify-between items-center gap-6 mb-8 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
 
-        <div className="relative w-full md:w-1/3">
+        <div className="relative w-full lg:w-1/2">
+          <span className="absolute inset-y-0 left-0 pl-4 flex items-center text-gray-400">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+          </span>
           <input
             type="text"
-            className="w-full px-4 py-2 pr-10 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-green-500"
-            placeholder="Search for products..."
+            className="w-full pl-12 pr-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:bg-white transition-all shadow-inner"
+            placeholder="Search thousands of products..."
             value={searchQuery}
             onChange={(e) => {
               setSearchQuery(e.target.value);
@@ -159,17 +179,18 @@ const ProductGrid = () => {
           />
         </div>
 
-        <select
-          value={sortBy}
-          onChange={(e) => setSortBy(e.target.value)}
-          className="w-full md:w-1/4 px-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-green-500"
-        >
-          <option value="">Filter By</option>
-          <option value="priceLow">Price: Low → High</option>
-          <option value="priceHigh">Price: High → Low</option>
-          <option value="rating">Rating</option>
-        </select>
-
+        <div className="flex w-full lg:w-auto gap-4">
+          <select
+            value={sortBy}
+            onChange={(e) => setSortBy(e.target.value)}
+            className="flex-1 lg:w-48 px-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-all font-medium text-gray-700"
+          >
+            <option value="">Sort By: Default</option>
+            <option value="priceLow">Price: Low to High</option>
+            <option value="priceHigh">Price: High to Low</option>
+            <option value="rating">Top Rated</option>
+          </select>
+        </div>
       </div>
 
       {/* Products */}

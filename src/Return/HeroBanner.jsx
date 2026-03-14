@@ -35,43 +35,49 @@ const HeroBanner = () => {
   }, []);
 
   return (
-    <section className="relative text-center py-24 px-6 bg-gradient-to-br from-green-100 via-green-200 to-green-100 overflow-hidden rounded-b-3xl">
+    <section className="relative text-center pt-8 pb-16 px-6 bg-gradient-to-br from-emerald-50 via-white to-emerald-50 overflow-hidden border-b border-emerald-100">
+      
+      {/* Decorative Orbs */}
+      <div className="absolute top-0 left-0 w-64 h-64 bg-emerald-200/30 rounded-full blur-3xl -ml-20 -mt-20"></div>
+      <div className="absolute bottom-0 right-0 w-96 h-96 bg-yellow-100/40 rounded-full blur-3xl -mr-32 -mb-32"></div>
 
-      {/* Grand Opening Badge */}
-      {/* <div className="absolute top-6 left-1/2 transform -translate-x-1/2 bg-yellow-400 text-green-900 font-bold px-6 py-2 rounded-full shadow-lg animate-bounce z-20">
-        Grand Opening – 11 March 
-      </div> */}
+      <div className="relative z-10">
+        <div className="mb-6">
+          <span className="inline-block px-4 py-1.5 rounded-full bg-emerald-100 text-emerald-700 text-sm font-bold tracking-wide uppercase">
+            🚀 Grand Opening deals
+          </span>
+        </div>
 
-      {/* Flower Rain */}
-      {/* <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="flower flower1">🌸</div>
-        <div className="flower flower2">🌼</div>
-        <div className="flower flower3">🌺</div>
-        <div className="flower flower4">🌹</div>
-      </div> */}
-
-      <div className="relative max-w-4xl mx-auto z-10">
-
-        <h1 className="whitespace-nowrap overflow-hidden text-ellipsis text-[clamp(1.75rem,6vw,3.5rem)] font-extrabold text-green-900 mb-6 tracking-tight leading-tight drop-shadow-xl">
-          <Slide direction="right">
-            <span>
-              Welcome to <span className="text-yellow-500">Shanu-</span>Mart 
-            </span>
+        <h1 className="text-[clamp(2.5rem,8vw,5rem)] font-black text-gray-900 mb-8 tracking-tighter leading-[1.1]">
+          <Slide direction="up">
+            <div>
+              Smart Way to <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-yellow-500">
+                Shop Groceries
+              </span>
+            </div>
           </Slide>
         </h1>
 
-        <p className="text-xl sm:text-2xl text-green-800 mb-10">
+        <p className="text-lg md:text-xl text-gray-600 mb-12 max-w-2xl mx-auto leading-relaxed">
           {heroData.subtitle}
         </p>
 
-        <Link to={heroData.buttonLink}>
-          <button
-            onClick={() => navigate(heroData.buttonLink)}
-            className="bg-green-600 hover:bg-green-700 text-white px-8 py-3 text-lg font-semibold rounded-full shadow-md transition-all duration-300 hover:scale-105 hover:shadow-[0_10px_25px_rgba(34,197,94,0.5)]"
-          >
-            {heroData.buttonText} 🛒
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+          <Link to={heroData.buttonLink}>
+            <button
+              className="group relative bg-emerald-600 text-white px-10 py-4 text-lg font-bold rounded-full shadow-xl shadow-emerald-200 hover:bg-emerald-700 transition-all duration-300 hover:scale-105 active:scale-95 flex items-center gap-3"
+            >
+              Explore Products
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+              </svg>
+            </button>
+          </Link>
+          <button className="px-8 py-4 text-lg font-semibold text-gray-600 hover:text-emerald-600 transition-colors">
+            View Offers
           </button>
-        </Link>
+        </div>
       </div>
 
       {/* CSS inside component */}

@@ -51,38 +51,38 @@ const PromoBanners = () => {
   };
 
   return (
-    <section className="px-4 max-w-7xl mx-auto pt-2 pb-8 mt-[-24px]">
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <section className="px-4 py-2">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {banners.map((banner, index) => {
-          const Wrapper = index < 2 ? Zoom : Slide;
-          const direction = index < 2 ? undefined : "right";
+          const Wrapper = Zoom;
 
           return (
-            <Wrapper key={banner.id} {...(direction ? { direction } : {})}>
+            <Wrapper key={banner.id}>
               <div
-                className={`relative ${banner.bgColor} rounded-xl shadow-lg overflow-hidden w-full flex flex-row items-stretch transition-all duration-500 ${banner.hoverShadow} hover:scale-[1.02]`}
+                className={`relative ${banner.bgColor} rounded-3xl shadow-sm overflow-hidden flex flex-row items-center transition-all duration-300 hover:shadow-xl hover:-translate-y-1 group border border-white/50`}
               >
-                {/* Text */}
-                <div className="w-1/2 p-5 flex flex-col justify-center items-start text-left">
-                  {banner.icon}
-                  <h3 className="text-xl sm:text-2xl font-bold mb-2 leading-snug">
+                {/* Text Content */}
+                <div className="w-1/2 p-6 z-10">
+                  <div className="p-2 bg-white/50 rounded-lg w-fit mb-3">
+                    {banner.icon}
+                  </div>
+                  <h3 className="text-xl font-bold text-gray-900 mb-4 leading-tight">
                     {banner.title}
                   </h3>
-
                   <button
                     onClick={() => handleClick(banner.link)}
-                    className="bg-gray-600 text-white px-4 py-2 rounded-full hover:bg-white hover:text-orange-300 transition-all duration-700"
+                    className="bg-gray-900 text-white text-sm font-bold px-6 py-2.5 rounded-full hover:bg-emerald-600 transition-colors shadow-sm"
                   >
                     Shop Now
                   </button>
                 </div>
 
-                {/* Image */}
-                <div className="w-1/2 h-48 sm:h-60 lg:h-auto">
+                {/* Image Section */}
+                <div className="w-1/2 flex justify-end items-center h-full pr-2">
                   <img
                     src={banner.img}
-                    alt={`ad-banner-${banner.id}`}
-                    className="w-full h-full object-contain rounded-r-xl"
+                    alt={banner.title}
+                    className="w-full h-40 object-contain group-hover:scale-110 transition-transform duration-500"
                   />
                 </div>
               </div>

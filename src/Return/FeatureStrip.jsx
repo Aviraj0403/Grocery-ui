@@ -26,26 +26,24 @@ const FeatureStrip = () => {
   const navigate = useNavigate();
 
   return (
-    <section className="py-6 mb-0">
-      <div className="flex flex-wrap justify-center items-center gap-4 sm:gap-6 p-4 rounded-xl border border-green-300 bg-gradient-to-br from-green-50 via-white to-green-100 shadow-md min-h-[60px]">
-        {features.map((item, idx) => (
-          <React.Fragment key={item.id}>
+    <section className="py-4 bg-white border-b border-gray-100">
+      <div className="max-w-7xl mx-auto px-4">
+        <div className="flex flex-wrap justify-center items-center gap-8 md:gap-16">
+          {features.map((item, idx) => (
             <div
+              key={item.id}
               onClick={() => item.link && navigate(item.link)}
-              className="flex items-center gap-2 px-2 sm:px-4 py-2 rounded-full bg-white hover:bg-green-100 hover:scale-105 hover:shadow-md transition-all duration-300 cursor-pointer"
+              className="group flex items-center gap-4 cursor-pointer"
             >
-              {item.icon}
-              <span className="text-sm sm:text-base text-gray-800 font-medium">
+              <div className="p-3 rounded-2xl bg-emerald-50 text-emerald-600 group-hover:bg-emerald-600 group-hover:text-white transition-all duration-300 shadow-sm">
+                {item.icon}
+              </div>
+              <span className="text-base font-bold text-gray-700 group-hover:text-emerald-600 transition-colors">
                 {item.text}
               </span>
             </div>
-
-            {/* Divider for larger screens except last item */}
-            {idx !== features.length - 1 && (
-              <div className="hidden sm:block border-l h-6 border-gray-300" />
-            )}
-          </React.Fragment>
-        ))}
+          ))}
+        </div>
       </div>
     </section>
   );
